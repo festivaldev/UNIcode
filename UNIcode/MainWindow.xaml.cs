@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using System.Unicode;
 using System.Windows;
@@ -55,6 +56,8 @@ namespace UNIcode
             LoadAllFontFamilies();
             cbxFamilies.ItemsSource = FontFamilies;
             cbxTileSize.ItemsSource = Helper.GetRangeInSteps(30, 400, 10);
+
+            this.Title = $"UNIcode - Version {Assembly.GetEntryAssembly().GetName().Version} Beta";
         }
 
         #endregion

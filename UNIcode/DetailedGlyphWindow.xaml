@@ -1,0 +1,44 @@
+﻿<Window x:Class="UNIcode.DetailedGlyphWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:UNIcode"
+        mc:Ignorable="d"
+        
+        Height="526"
+        ResizeMode="CanMinimize"
+        Width="350"
+        WindowStartupLocation="CenterScreen">
+
+    <StackPanel>
+        <Label x:Name="lblGlyph"
+               FontSize="80"
+               Height="130"
+               HorizontalContentAlignment="Center"
+               VerticalContentAlignment="Center" />
+
+        <Label x:Name="lblName"
+               Height="52"
+               HorizontalContentAlignment="Center"
+               VerticalContentAlignment="Center" />
+
+        <TextBox x:Name="tbxCode"
+                 FontFamily="Consolas"
+                 IsReadOnly="True"
+                 Margin="18,9"
+                 Padding="2" />
+
+        <RichTextBox x:Name="rtbDetails"
+                     BorderThickness="0"
+                     FontSize="14"
+                     Height="200"
+                     IsReadOnly="True"
+                     Margin="13"
+                     Padding="2"
+                     VerticalScrollBarVisibility="Auto" />
+
+        <Button Click="OnCopyClick" Height="25" Margin="12,0,12,12">Copy Character to Clipboard</Button>
+    </StackPanel>
+
+</Window>

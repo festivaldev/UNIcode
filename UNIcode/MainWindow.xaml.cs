@@ -294,7 +294,11 @@ namespace UNIcode
             try {
                 var el = (Label) sender;
                 if (e.ChangedButton == MouseButton.Left && Keyboard.IsKeyUp(Key.LeftShift)) {
-                    // TODO
+                    var code = $"{(int) el.Content.ToString()[0],0:X4}";
+
+                    var window = new DetailedGlyphWindow();
+                    window.Show(selectedFont, el.Content.ToString()[0], code);
+
                 } else if (e.ChangedButton == MouseButton.Left && Keyboard.IsKeyDown(Key.LeftShift)) {
                     // TODO
                 }

@@ -14,7 +14,7 @@
         Title="UNIcode"
         Width="{Binding RelativeSource={RelativeSource Self}, Path=NewWidth, Mode=OneWayToSource, Delay=100, FallbackValue=760}"
         WindowStartupLocation="CenterScreen">
-
+    
     <Grid x:Name="grdMain">
         <StackPanel x:Name="skpPanel"
                     Background="White"
@@ -22,7 +22,6 @@
                     Orientation="Horizontal"
                     Panel.ZIndex="900"
                     VerticalAlignment="Top">
-
             <ComboBox x:Name="cbxFamilies"
                       Height="26"
                       Margin="12,0,0,0"
@@ -37,8 +36,7 @@
                       VerticalContentAlignment="Center"
                       Width="120" />
 
-            <Label Content="Grid:"
-                   VerticalContentAlignment="Center" />
+            <Label Content="Grid:" VerticalContentAlignment="Center" />
 
             <TextBox x:Name="tbxDimension"
                      HorizontalContentAlignment="Center"
@@ -51,12 +49,12 @@
             <CheckBox x:Name="chxAuto"
                       Checked="OnChecked"
                       Content="Auto-Size"
+                      IsChecked="True"
                       Margin="6,13,13,12"
                       Unchecked="OnUnchecked"
                       VerticalContentAlignment="Center" />
             
-            <Label Content="Tile Size:"
-                   VerticalContentAlignment="Center" />
+            <Label Content="Tile Size:" VerticalContentAlignment="Center" />
 
             <ComboBox x:Name="cbxTileSize"
                       Height="26"
@@ -72,10 +70,8 @@
                     Padding="9,0,9,0" />
         </StackPanel>
         
-        <Grid x:Name="grdGrid"
-              Margin="2,50,15,50">
-
-            <WrapPanel x:Name="wrpGlyphes"
+        <Grid x:Name="grdGrid" Margin="2,50,15,50">
+            <WrapPanel x:Name="wrpGlyphs"
                        Height="350"
                        HorizontalAlignment="Center"
                        MouseWheel="OnMouseWheel"
@@ -96,7 +92,6 @@
                     Height="50"
                     Panel.ZIndex="901"
                     VerticalAlignment="Bottom">
-            
             <TextBox x:Name="tbxString"
                      FontSize="14"
                      Margin="12"
@@ -104,5 +99,4 @@
                      Width="302" />
         </StackPanel>
     </Grid>
-
 </Window>

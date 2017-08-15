@@ -7,6 +7,8 @@
         mc:Ignorable="d"
         
         Height="{Binding RelativeSource={RelativeSource Self}, Path=NewHeight, Mode=OneWayToSource, Delay=100, FallbackValue=500}"
+        Loaded="OnLoaded"
+        KeyDown="OnFormKeyDown"
         MinHeight="500"
         MinWidth="760"
         Title="UNIcode"
@@ -34,12 +36,13 @@
                       SelectionChanged="OnTypefaceChanged"
                       VerticalContentAlignment="Center"
                       Width="120" />
-            
+
             <Label Content="Grid:"
                    VerticalContentAlignment="Center" />
 
             <TextBox x:Name="tbxDimension"
                      HorizontalContentAlignment="Center"
+                     KeyDown="OnInputKeyDown"
                      Margin="6,12"
                      Text="10x5"
                      VerticalContentAlignment="Center"
@@ -84,6 +87,7 @@
                    HorizontalAlignment="Right"
                    LargeChange="1"
                    Margin="0,50,0,50"
+                   Scroll="OnScroll"
                    SmallChange="1"
                    ViewportSize="13" />
 

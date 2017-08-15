@@ -251,7 +251,8 @@ namespace UNIcode
         #region Event Handlers
 
         private void OnAboutClick(object sender, EventArgs e) {
-            // TODO
+            var window = new AboutWindow();
+            window.ShowDialog();
         }
 
         private void OnChecked(object sender, RoutedEventArgs e) {

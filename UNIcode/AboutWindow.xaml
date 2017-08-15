@@ -1,0 +1,56 @@
+﻿<Window x:Class="UNIcode.AboutWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:UNIcode"
+        mc:Ignorable="d"
+        
+        Height="350"
+        Title="About UNIcode"
+        Width="400"
+        WindowStartupLocation="CenterScreen">
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="50"/>
+        </Grid.RowDefinitions>
+        
+        <StackPanel>
+            <Label Content="ṴꞤȊcode"
+                   FontFamily="Segoe UI Light"
+                   FontSize="80"
+                   Foreground="#FF111111"
+                   Height="130"
+                   HorizontalContentAlignment="Center"
+                   Margin="-1,0,1,0"
+                   VerticalContentAlignment="Center" />
+            
+            <Label Margin="0,12,0,30" HorizontalContentAlignment="Center">A MODERN CHARACTER MAP INTERPRETATION</Label>
+
+            <TextBlock FontSize="14" FontWeight="DemiBold" TextAlignment="Center">
+                <Run>Made by</Run>
+                <Run Cursor="Hand" MouseDown="OnTwitterMouseDown">
+                    <Run.Foreground>
+                        <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.HotTrackColorKey}}"/>
+                    </Run.Foreground>@vainamov</Run>
+                <Run>(https://festival.ml)</Run>
+            </TextBlock>
+
+            <TextBlock FontSize="14" FontWeight="DemiBold" TextAlignment="Center">
+                <Run>Uses</Run>
+                <Run Cursor="Hand" MouseDown="OnLibraryMouseDown">
+                    <Run.Foreground>
+                        <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.HotTrackColorKey}}"/>
+                    </Run.Foreground>GoldenCrystal/NetUnicodeInfo</Run>
+            </TextBlock>
+        </StackPanel>
+        
+        <Label Grid.Row="1"
+               FontSize="14"
+               HorizontalContentAlignment="Center"
+               VerticalContentAlignment="Center">
+            Copyright @vainamov 2017</Label>
+    </Grid>
+</Window>

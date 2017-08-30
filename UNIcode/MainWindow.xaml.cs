@@ -13,6 +13,7 @@ using System.Windows.Input;
 using System.Windows.Markup;
 using System.Windows.Media;
 
+// ReSharper disable InconsistentNaming
 // ReSharper disable CompareOfFloatsByEqualityOperator
 // ReSharper disable ValueParameterNotUsed
 
@@ -38,10 +39,11 @@ namespace UNIcode
 
         private bool autoSizeEnabled;
         private List<int> characters = new List<int>();
-        private int currentStartIndex;
         private double columnCount = 10D;
+        private int currentStartIndex;
         private List<int> filteredCharacters = new List<int>();
         private double rowCount = 5D;
+        private char selectedCharacter;
         private FontFamily selectedFont;
         private int _tileSize;
         private int tileSize = 70;
@@ -277,6 +279,8 @@ namespace UNIcode
             if (e.Key == Key.F && (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))) {
                 var window = new FilterWindow();
                 window.Show(this);
+            } else if (e.Key == Key.C && (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))) {
+                Clipboard.SetText(selectedCharacter.ToString());
             }
         }
 
@@ -312,6 +316,8 @@ namespace UNIcode
             var el = (Label) sender;
             el.Background = hotTrackBrush;
             el.Foreground = whiteBrush;
+
+            selectedCharacter = el.Content.ToString()[0];
         }
 
         private void OnLabelMouseLeave(object sender, MouseEventArgs e) {
@@ -363,7 +369,6 @@ namespace UNIcode
 
         private void OnTypefaceChanged(object sender, SelectionChangedEventArgs e) {
             selectedFont = new FontFamily($"{cbxFamilies.SelectedItem} {cbxTypefaces.SelectedItem}");
-            tbxString.FontFamily = selectedFont;
 
             foreach (Label label in wrpGlyphs.Children) {
                 label.FontFamily = selectedFont;

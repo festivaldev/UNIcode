@@ -92,11 +92,13 @@
                     Height="50"
                     Panel.ZIndex="901"
                     VerticalAlignment="Bottom">
-            <TextBox x:Name="tbxString"
+            <!-- <TextBox x:Name="tbxString"
                      FontSize="14"
                      Margin="12"
                      VerticalContentAlignment="Center"
-                     Width="302" />
+                     Width="302" /> -->
+
+            <Label Content="" VerticalContentAlignment="Center" />
         </StackPanel>
     </Grid>
 </Window>

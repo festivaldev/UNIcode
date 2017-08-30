@@ -317,7 +317,8 @@ namespace UNIcode
             el.Background = hotTrackBrush;
             el.Foreground = whiteBrush;
 
-            selectedCharacter = el.Content.ToString()[0];
+            if (!string.IsNullOrEmpty(el.Content.ToString()))
+                selectedCharacter = el.Content.ToString()[0];
         }
 
         private void OnLabelMouseLeave(object sender, MouseEventArgs e) {

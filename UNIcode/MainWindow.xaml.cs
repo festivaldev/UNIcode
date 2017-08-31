@@ -73,7 +73,7 @@ namespace UNIcode
             mniCopyHexcode.Click += (sender, e) => { Clipboard.SetText($"&#x{(int) selectedCharacter,0:X4};"); };
             mnuContext.Items.Add(mniCopyHexcode);
 
-            this.Title = $"UNIcode - Version {Assembly.GetEntryAssembly().GetName().Version} Beta";
+            this.Title = $"UNIcode - Version {Assembly.GetEntryAssembly().GetName().Version} Release Candidate";
         }
 
         #endregion

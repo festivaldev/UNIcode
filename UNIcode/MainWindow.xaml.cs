@@ -12,6 +12,7 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Markup;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 // ReSharper disable InconsistentNaming
 // ReSharper disable CompareOfFloatsByEqualityOperator
@@ -42,6 +43,7 @@ namespace UNIcode
         private double columnCount = 10D;
         private int currentStartIndex;
         private List<int> filteredCharacters = new List<int>();
+        private ContextMenu mnuContext = new ContextMenu();
         private double rowCount = 5D;
         private char selectedCharacter;
         private FontFamily selectedFont;
@@ -58,6 +60,18 @@ namespace UNIcode
             LoadAllFontFamilies();
             cbxFamilies.ItemsSource = FontFamilies;
             cbxTileSize.ItemsSource = Helper.GetRangeInSteps(30, 400, 10);
+
+            var mniCopyCharacter = new MenuItem { Header = "Copy Character" };
+            mniCopyCharacter.Click += (sender, e) => { Clipboard.SetText(selectedCharacter.ToString()); };
+            mnuContext.Items.Add(mniCopyCharacter);
+
+            var mniCopyUnicode = new MenuItem { Header = "Copy Unicode" };
+            mniCopyUnicode.Click += (sender, e) => { Clipboard.SetText($"U+{(int) selectedCharacter,0:X4}"); };
+            mnuContext.Items.Add(mniCopyUnicode);
+
+            var mniCopyHexcode = new MenuItem { Header = "Copy Hexcode" };
+            mniCopyHexcode.Click += (sender, e) => { Clipboard.SetText($"&#x{(int) selectedCharacter,0:X4};"); };
+            mnuContext.Items.Add(mniCopyHexcode);
 
             this.Title = $"UNIcode - Version {Assembly.GetEntryAssembly().GetName().Version} Beta";
         }
@@ -281,6 +295,10 @@ namespace UNIcode
                 window.Show(this);
             } else if (e.Key == Key.C && (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))) {
                 Clipboard.SetText(selectedCharacter.ToString());
+            } else if (e.Key == Key.U && (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))) {
+                Clipboard.SetText($"U+{(int) selectedCharacter,0:X4}");
+            } else if (e.Key == Key.H && (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))) {
+                Clipboard.SetText($"&#x{(int) selectedCharacter,0:X4};");
             }
         }
 
@@ -308,6 +326,11 @@ namespace UNIcode
 
                 } else if (e.ChangedButton == MouseButton.Left && Keyboard.IsKeyDown(Key.LeftShift)) {
                     // TODO
+                } else if (e.ChangedButton == MouseButton.Right && !string.IsNullOrEmpty(el.Content.ToString())) {
+                    el.ContextMenu = mnuContext;
+                    mnuContext.PlacementTarget = el;
+                    mnuContext.Placement = PlacementMode.Center;
+                    mnuContext.IsOpen = true;
                 }
             } catch { }
         }

@@ -18,6 +18,8 @@ namespace UNIcode
 
         public AboutWindow() {
             InitializeComponent();
+
+            chxIgnoreConfig.IsChecked = !MainWindow.IgnoreConfig;
         }
 
         #endregion
@@ -31,13 +33,25 @@ namespace UNIcode
         #endregion
 
         #region Event Handlers
-        
-        private void OnTwitterMouseDown(object sender, MouseEventArgs e) {
-            Process.Start("https://twitter.com/vainamov");
+
+        private void OnChecked(object sender, RoutedEventArgs e) {
+            MainWindow.IgnoreConfig = false;
+        }
+
+        private void OnFestivalMouseDown(object sender, MouseEventArgs e) {
+            Process.Start("https://festival.ml");
         }
 
         private void OnLibraryMouseDown(object sender, MouseEventArgs e) {
             Process.Start("https://github.com/GoldenCrystal/NetUnicodeInfo/blob/master/LICENSE.txt");
+        }
+
+        private void OnTwitterMouseDown(object sender, MouseEventArgs e) {
+            Process.Start("https://twitter.com/vainamov");
+        }
+
+        private void OnUnchecked(object sender, RoutedEventArgs e) {
+            MainWindow.IgnoreConfig = true;
         }
 
         #endregion

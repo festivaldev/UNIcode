@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -12,7 +14,7 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Markup;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
+using Newtonsoft.Json;
 
 // ReSharper disable InconsistentNaming
 // ReSharper disable CompareOfFloatsByEqualityOperator
@@ -25,6 +27,7 @@ namespace UNIcode
         #region Properties
 
         public ObservableCollection<string> FontFamilies { get; private set; } = new ObservableCollection<string>();
+        public static bool IgnoreConfig;
         public int NewHeight { set => CalculateDimension(); }
         public int NewWidth { set => CalculateDimension(); }
 
@@ -38,12 +41,20 @@ namespace UNIcode
         private readonly SolidColorBrush whiteBrush = new SolidColorBrush(Colors.White);
         private readonly XmlLanguage xmlLang = XmlLanguage.GetLanguage("en-us");
 
+        private SolidColorBrush accentBrush;
+        private SolidColorBrush backgroundBrush;
+        private SolidColorBrush foregroundBrush;
+        private SolidColorBrush foregroundHoverBrush;
+
+        private string hoverBackground = "#0066CC";
+        private string hoverForeground = "#FFFFFF";
+
         private bool autoSizeEnabled;
         private List<int> characters = new List<int>();
         private double columnCount = 10D;
         private int currentStartIndex;
         private List<int> filteredCharacters = new List<int>();
-        private ContextMenu mnuContext = new ContextMenu();
+        private readonly ContextMenu mnuContext = new ContextMenu();
         private double rowCount = 5D;
         private char selectedCharacter;
         private FontFamily selectedFont;
@@ -60,6 +71,11 @@ namespace UNIcode
             LoadAllFontFamilies();
             cbxFamilies.ItemsSource = FontFamilies;
             cbxTileSize.ItemsSource = Helper.GetRangeInSteps(30, 400, 10);
+
+            accentBrush = hotTrackBrush;
+            backgroundBrush = gainsboroBrush;
+            foregroundBrush = blackBrush;
+            foregroundHoverBrush = whiteBrush;
 
             var mniCopyCharacter = new MenuItem { Header = "Copy Character" };
             mniCopyCharacter.Click += (sender, e) => { Clipboard.SetText(selectedCharacter.ToString()); };
@@ -191,8 +207,8 @@ namespace UNIcode
                     FontSize = tileSize / 2,
                     BorderThickness = new Thickness(.5),
                     BorderBrush = whiteBrush,
-                    Background = gainsboroBrush,
-                    Foreground = blackBrush,
+                    Background = backgroundBrush, // gainsboroBrush
+                    Foreground = foregroundBrush, // blackBrush
                     Content = string.Empty,
                     Cursor = Cursors.Hand
                 };
@@ -221,6 +237,49 @@ namespace UNIcode
             }
 
             ResetScrollbar();
+        }
+
+        private void LoadValuesFromConfig(UnicodeConfig config) {
+            if (IgnoreConfig = config.Ignore) {
+                cbxTileSize.SelectedIndex = 4;
+                CalculateDimension();
+                return;
+            }
+
+            chxAuto.IsChecked = false;
+            autoSizeEnabled = false;
+
+            columnCount = config.ColumnCount;
+            hoverBackground = config.HoverBackground;
+            accentBrush = new SolidColorBrush((Color) ColorConverter.ConvertFromString(hoverBackground));
+            hoverForeground = config.HoverForeground;
+            foregroundHoverBrush = new SolidColorBrush((Color) ColorConverter.ConvertFromString(hoverForeground));
+            rowCount = config.RowCount;
+
+            if (!string.IsNullOrEmpty(config.SelectedFamily)) {
+                try {
+                    cbxFamilies.SelectedItem = config.SelectedFamily;
+                } catch { }
+            }
+
+            if (!string.IsNullOrEmpty(config.SelectedTypeface)) {
+                try {
+                    cbxTypefaces.SelectedItem = config.SelectedTypeface;
+                } catch { }
+            }
+
+            try {
+                cbxTileSize.SelectedItem = config.TileSize;
+            } catch { }
+
+            tbxDimension.Text = $"{columnCount}x{rowCount}";
+
+            Height = config.WindowHeight;
+            Width = config.WindowWidth;
+            Left = (SystemParameters.WorkArea.Width - Width) / 2 + SystemParameters.WorkArea.Left;
+            Top = (SystemParameters.WorkArea.Height - Height) / 2 + SystemParameters.WorkArea.Top;
+            chxAuto.IsChecked = true;
+            autoSizeEnabled = true;
         }
 
         private void ResetScrollbar() {
@@ -259,6 +318,9 @@ namespace UNIcode
             });
 
             foreach (var element in data) {
+                if (element.i >= wrpGlyphs.Children.Count)
+                    break;
+
                 var label = (Label) wrpGlyphs.Children[element.i];
                 label.Content = element.content;
                 label.ToolTip = element.toolTip;
@@ -280,6 +342,24 @@ namespace UNIcode
             CalculateDimension();
         }
 
+        private void OnClosing(object sender, CancelEventArgs e) {
+            var config = new UnicodeConfig {
+                ColumnCount = columnCount,
+                HoverBackground = hoverBackground,
+                HoverForeground = hoverForeground,
+                Ignore = IgnoreConfig,
+                RowCount = rowCount,
+                SelectedFamily = cbxFamilies.SelectedItem.ToString(),
+                SelectedTypeface = cbxTypefaces.SelectedItem.ToString(),
+                TileSize = tileSize,
+                WindowHeight = ActualHeight,
+                WindowWidth = ActualWidth
+            };
+
+            var configFile = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "UNIcode", "config.json");
+            File.WriteAllText(configFile, JsonConvert.SerializeObject(config, Formatting.Indented));
+        }
+
         private void OnFamilyChanged(object sender, SelectionChangedEventArgs e) {
             selectedFont = new FontFamily(cbxFamilies.SelectedItem.ToString());
             cbxTypefaces.ItemsSource = selectedFont.GetTypefaces().ToList().FindAll(t => !t.IsBoldSimulated && !t.IsObliqueSimulated).Select(t => t.FaceNames[xmlLang]);
@@ -299,6 +379,18 @@ namespace UNIcode
                 Clipboard.SetText($"U+{(int) selectedCharacter,0:X4}");
             } else if (e.Key == Key.H && (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))) {
                 Clipboard.SetText($"&#x{(int) selectedCharacter,0:X4};");
+            }
+
+            if (e.Key == Key.R && Keyboard.IsKeyDown(Key.LeftCtrl) && Keyboard.IsKeyDown(Key.LeftShift)) {
+                var configFile = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "UNIcode", "config.json");
+                File.WriteAllText(configFile, JsonConvert.SerializeObject(new UnicodeConfig(), Formatting.Indented));
+
+                currentStartIndex = 0;
+                cbxFamilies.SelectedIndex = 0;
+                cbxTypefaces.SelectedIndex = 0;
+                LoadValuesFromConfig(new UnicodeConfig());
+                AdjustDimension();
+                MessageBox.Show("Successfully restored original settings.", "UNIcode", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
 
@@ -337,8 +429,8 @@ namespace UNIcode
 
         private void OnLabelMouseEnter(object sender, MouseEventArgs e) {
             var el = (Label) sender;
-            el.Background = hotTrackBrush;
-            el.Foreground = whiteBrush;
+            el.Background = accentBrush; // hotTrackBrush
+            el.Foreground = foregroundHoverBrush; // whiteBrush
 
             if (!string.IsNullOrEmpty(el.Content.ToString()))
                 selectedCharacter = el.Content.ToString()[0];
@@ -346,27 +438,28 @@ namespace UNIcode
 
         private void OnLabelMouseLeave(object sender, MouseEventArgs e) {
             var el = (Label) sender;
-            el.Background = gainsboroBrush;
-            el.Foreground = blackBrush;
+            el.Background = backgroundBrush; // gainsboroBrush
+            el.Foreground = foregroundBrush; // blackBrush
         }
 
         private void OnLoaded(object sender, EventArgs e) {
             cbxFamilies.SelectedIndex = 0;
-            if (Environment.GetCommandLineArgs().Length >= 2) {
-                try {
-                    cbxFamilies.SelectedItem = Environment.GetCommandLineArgs()[1];
-                } catch { }
-            }
-
             cbxTypefaces.SelectedIndex = 0;
-            if (Environment.GetCommandLineArgs().Length >= 3) {
-                try {
-                    cbxTypefaces.SelectedItem = Environment.GetCommandLineArgs()[2];
-                } catch { }
-            }
 
-            cbxTileSize.SelectedIndex = 4;
-            CalculateDimension();
+            var configPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "UNIcode");
+            if (!Directory.Exists(configPath))
+                Directory.CreateDirectory(configPath);
+
+            var configFile = Path.Combine(configPath, "config.json");
+            if (!File.Exists(configFile)) {
+                File.WriteAllText(configFile, JsonConvert.SerializeObject(new UnicodeConfig(), Formatting.Indented));
+
+                cbxTileSize.SelectedIndex = 4;
+                CalculateDimension();
+            } else {
+                var config = JsonConvert.DeserializeObject<UnicodeConfig>(File.ReadAllText(configFile));
+                LoadValuesFromConfig(config);
+            }
         }
 
         private void OnMouseWheel(object sender, MouseWheelEventArgs e) {

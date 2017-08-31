@@ -10,13 +10,13 @@
         Title="About UNIcode"
         Width="400"
         WindowStartupLocation="CenterScreen">
-    
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition />
             <RowDefinition Height="50"/>
         </Grid.RowDefinitions>
-        
+
         <StackPanel>
             <Label Content="ṴꞤȊcode"
                    FontFamily="Segoe UI Light"
@@ -26,7 +26,7 @@
                    HorizontalContentAlignment="Center"
                    Margin="-1,0,1,0"
                    VerticalContentAlignment="Center" />
-            
+
             <Label Margin="0,12,0,30" HorizontalContentAlignment="Center">A MODERN CHARACTER MAP INTERPRETATION</Label>
 
             <TextBlock FontSize="14" FontWeight="DemiBold" TextAlignment="Center">
@@ -35,22 +35,42 @@
                     <Run.Foreground>
                         <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.HotTrackColorKey}}"/>
                     </Run.Foreground>@vainamov</Run>
-                <Run>(https://festival.ml)</Run>
             </TextBlock>
 
             <TextBlock FontSize="14" FontWeight="DemiBold" TextAlignment="Center">
+                <Run Cursor="Hand" MouseDown="OnFestivalMouseDown">
+                    <Run.Foreground>
+                        <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.HotTrackColorKey}}"/>
+                    </Run.Foreground>https://festival.ml/</Run>
+            </TextBlock>
+
+            <!-- <TextBlock FontSize="14" FontWeight="DemiBold" TextAlignment="Center">
                 <Run>Uses</Run>
                 <Run Cursor="Hand" MouseDown="OnLibraryMouseDown">
                     <Run.Foreground>
                         <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.HotTrackColorKey}}"/>
                     </Run.Foreground>GoldenCrystal/NetUnicodeInfo</Run>
-            </TextBlock>
+            </TextBlock> -->
         </StackPanel>
-        
-        <Label Grid.Row="1"
-               FontSize="14"
-               HorizontalContentAlignment="Center"
-               VerticalContentAlignment="Center">
-            Copyright @vainamov 2017</Label>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Label Content="Copyright @vainamov 2017"
+                   Grid.Column="0"
+                   HorizontalContentAlignment="Center"
+                   VerticalContentAlignment="Center" />
+
+            <CheckBox x:Name="chxIgnoreConfig"
+                      Checked="OnChecked"
+                      Content="Always preserve last layout"
+                      Grid.Column="1"
+                      HorizontalAlignment="Center"
+                      Unchecked="OnUnchecked"
+                      VerticalAlignment="Center" />
+        </Grid>
     </Grid>
 </Window>

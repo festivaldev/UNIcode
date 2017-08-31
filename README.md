@@ -2,7 +2,7 @@
 ṴꞤȊcode is a modern character map interpretation created because of the unendurable handling the default Windows Charactermap provides.  
 Also let's face it, nobody really likes the default character map: https://twitter.com/vainamov/status/893573260541128704.
 
-##### IMPORTANT, UNIcode only runs on the .NET Framework v7.0 due to NuGet package issues with .NET Standard on any lower framework!
+##### IMPORTANT, UNIcode only runs on the .NET Framework v4.7 due to NuGet package issues with .NET Standard on any lower framework! Download the framework here: https://www.microsoft.com/de-de/download/details.aspx?id=55167.
 
 ## Features
 - Full unicode support from `0000` to `10FFFF`
@@ -25,6 +25,7 @@ Just download the ZIP file included in the latest release. https://github.com/fe
 
 ## Known Issues
 - Performance may get drastically worse when displaying many tiles.
+- In 60 out of 100 cases the ALT+ codes provided aren't correct. Haven't figured out yet, how to correctly determine them.
 - Due to problems with overwide characters like `U+FDFD` (﷽) the HTML structure used for PDF export crashes, which is why PDF export is disabled at the moment.
 
 ## Roadmap

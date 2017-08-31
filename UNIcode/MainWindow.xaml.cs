@@ -240,7 +240,8 @@ namespace UNIcode
         }
 
         private void LoadValuesFromConfig(UnicodeConfig config) {
-            if (IgnoreConfig = config.Ignore) {
+            IgnoreConfig = config.Ignore;
+            if (IgnoreConfig) {
                 cbxTileSize.SelectedIndex = 4;
                 CalculateDimension();
                 return;
@@ -392,7 +393,7 @@ namespace UNIcode
                 cbxTypefaces.SelectedIndex = 0;
                 LoadValuesFromConfig(new UnicodeConfig());
                 AdjustDimension();
-                MessageBox.Show("Successfully restored original settings.", "UNIcode", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show("Successfully restored original settings.", "UNIcode", MessageBoxButton.OK);
             }
         }
 
@@ -407,6 +408,11 @@ namespace UNIcode
                     }
                 } catch { }
             }
+        }
+
+        private void OnKeybindingsClick(object sender, EventArgs e) {
+            var window = new KeybindingsWindow();
+            window.Show();
         }
 
         private void OnLabelMouseDown(object sender, MouseButtonEventArgs e) {

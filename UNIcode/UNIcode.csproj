@@ -144,6 +144,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="KeybindingsWindow.xaml.cs">
+      <DependentUpon>KeybindingsWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UnicodeConfig.cs" />
     <Page Include="AboutWindow.xaml">
       <SubType>Designer</SubType>
@@ -154,6 +157,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="FilterWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="KeybindingsWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -87,24 +87,8 @@
                    Scroll="OnScroll"
                    SmallChange="1"
                    ViewportSize="13" />
-
-        <!-- <Border BorderBrush="{x:Null}" Height="50" VerticalAlignment="Bottom">
-            <TextBlock FontSize="14"  TextAlignment="Center" VerticalAlignment="Center">
-                <Run Background="Gainsboro" FontFamily="Consolas">Ctrl+F</Run>
-                <Run>Filter</Run>
-                <Run>&#x0020;&#x00AD;&#x0020;&#x00AD;&#x0020;</Run>
-                <Run Background="Gainsboro" FontFamily="Consolas">Ctrl+C</Run>
-                <Run>Copy Hovered Character</Run>
-                <Run>&#x0020;&#x00AD;&#x0020;&#x00AD;&#x0020;</Run>
-                <Run Background="Gainsboro" FontFamily="Consolas">Ctrl+U</Run>
-                <Run>Copy Hovered Unicode</Run>
-                <Run>&#x0020;&#x00AD;&#x0020;&#x00AD;&#x0020;</Run>
-                <Run Background="Gainsboro" FontFamily="Consolas">Ctrl+H</Run>
-                <Run>Copy Hovered Hexcode</Run>
-            </TextBlock>
-        </Border> -->
-
-        <Grid Height="50" VerticalAlignment="Bottom">
+        
+        <!-- <Grid Height="50" VerticalAlignment="Bottom">
             <StackPanel Orientation="Horizontal"
                     Background="White"
                     Height="29"
@@ -118,7 +102,20 @@
                 <Label Background="Gainsboro" FontFamily="Consolas" Margin="3">Hover+CTRL+U</Label>
                 <Label Margin="1" Padding="5,6,10,5">Copy Unicode</Label>
                 <Label Background="Gainsboro" FontFamily="Consolas" Margin="3">Hover+CTRL+H</Label>
-                <Label Margin="1" Padding="5,6,5,5">Copy Hexcode</Label>
+                <Label Margin="1" Padding="5,6,5,5">Copy Hexcode</Label> 
+            </StackPanel>
+        </Grid> -->
+
+        <Grid Height="50" VerticalAlignment="Bottom">
+            <StackPanel Orientation="Horizontal"
+                        Background="White"
+                        Height="26"
+                        Panel.ZIndex="901"
+                        VerticalAlignment="Center">
+                <Button Click="OnKeybindingsClick"
+                        Content="Show Keybindings"
+                        Margin="12,0,0,0"
+                        Padding="9,0,9,0" />
             </StackPanel>
         </Grid>
     </Grid>

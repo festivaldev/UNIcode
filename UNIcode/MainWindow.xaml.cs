@@ -358,6 +358,8 @@ namespace UNIcode
 
             var configFile = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "UNIcode", "config.json");
             File.WriteAllText(configFile, JsonConvert.SerializeObject(config, Formatting.Indented));
+
+            Application.Current.Shutdown(0);
         }
 
         private void OnFamilyChanged(object sender, SelectionChangedEventArgs e) {

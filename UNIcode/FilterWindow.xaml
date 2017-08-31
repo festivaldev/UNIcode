@@ -19,6 +19,7 @@
                  FontFamily="Segoe UI Light"
                  FontSize="18"
                  Margin="0,12"
+                 KeyDown="OnKeyDown"
                  Padding="0,3">
             <TextBox.Style>
                 <Style TargetType="TextBox">
@@ -103,13 +104,13 @@
 
         <WrapPanel FlowDirection="RightToLeft" Margin="0,7,0,0">
             <Button Click="OnApplyClick"
-                    Content="Apply Filter"
+                    Content="Apply"
                     Height="25"
                     Margin="0,12"
                     Width="100" />
 
             <Button Click="OnResetClick"
-                    Content="Reset Filter"
+                    Content="Reset"
                     Height="25"
                     Margin="12"
                     Width="100" />

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.SqlClient;
 using System.Globalization;
 using System.Linq;
 using System.Unicode;
@@ -69,6 +70,12 @@ namespace UNIcode
         private void OnFilterExampleMouseDown(object sender, MouseEventArgs e) {
             var el = (Label) sender;
             tbxFilter.Text = el.Content.ToString();
+        }
+
+        private void OnKeyDown(object sender, KeyEventArgs e) {
+            if (e.Key == Key.Enter) {
+                OnApplyClick(sender, new EventArgs());
+            }
         }
 
         private void OnResetClick(object sender, EventArgs e) {
